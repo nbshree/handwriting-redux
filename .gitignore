@@ -11,6 +11,16 @@
 # production
 /build
 
+# JetBrains Rider
+.idea/
+.idea_modules/
+*.sln.iml
+*.iml
+*.ipr
+*.iws
+/out/
+/target/
+
 # misc
 .DS_Store
 .env.local
