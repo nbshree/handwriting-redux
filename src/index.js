@@ -1,12 +1,47 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import createStore from "./createStore.js"
+const initialState = {
+    color: 'blue'
+}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+function reducer(state = initialState, action) {
+    switch (action.type) {
+        case 'CHANGE_COLOR':
+            return {
+                ...state,
+                color: action.color
+            }
+        default:
+            return state;
+    }
+}
+const store = createStore(reducer);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function renderApp(state) {
+    renderHeader(state);
+    renderContent(state);
+}
+function renderHeader(state) {
+    const header = document.getElementById('header');
+    header.style.color = state.color;
+}
+function renderContent(state) {
+    const content = document.getElementById('content');
+    content.style.color = state.color;
+}
+
+document.getElementById('to-blue').onclick = function () {
+    store.dispatch({
+        type: 'CHANGE_COLOR',
+        color: 'rgb(0, 51, 254)'
+    });
+}
+document.getElementById('to-pink').onclick = function () {
+    store.dispatch({
+        type: 'CHANGE_COLOR',
+        color: 'rgb(247, 109, 132)'
+    });
+}
+
+renderApp(store.getState());
+//每次state发生改变时，都重新渲染
+store.subscribe(() => renderApp(store.getState()));
